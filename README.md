@@ -21,6 +21,80 @@ To build, run:
 
 ```shell
 go build -o bin/platoon main.go
+
+./bin/platoon --version    # 0.0.0-0.0.1
+```
+
+## Config
+
+The configuration for the original Platoon was written as a PHP array. For Platoon-go, the configuration is changing to a YAML file (`platoon.yml`) placed at the root of the project. An example would look like this:
+
+```yml
+repo: git@github.com:org/app.git
+
+default: staging
+
+targets:
+  common:
+    php:
+      bin: /usr/bin/php
+      composer: /usr/bin/composer
+    keep: 2
+  
+  staging:
+    host: staging.example.com
+    port: 22
+    username: deploy
+    root: /var/www/myapp
+    branch: main
+    assets:
+      - public/build:public/build
+    scripts:
+      pre-deploy-local:
+        - npm run build
+      post-deploy-remote:
+        - @artisan config:cache
+```
+
+The scripts will change from the existing solution as the deployment process will no longer be Laravel or PHP specific.
+
+### Deployment
+
+To run a deployment
+
+```shell
+# to a specific target
+platoon deploy staging
+
+# to the default target
+platoon deploy
+
+# to multiple targets
+platoon deploy staging,production
+```
+
+### Release management
+
+Get a list of available releases:
+
+```shell
+# the default target
+platoon release:list
+
+# or a specific target
+platoon release:list staging
+```
+
+Rollback to the previous release:
+
+```shell
+platoon release:rollback
+```
+
+Set a specific release as active:
+
+```shell
+platoon release:active 202512042144
 ```
 
 ## License
