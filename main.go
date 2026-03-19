@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/yourname/platoon-go/cmd"
-)
+import "platoon-go/cmd"
 
 func main() {
 	cmd.Execute()
