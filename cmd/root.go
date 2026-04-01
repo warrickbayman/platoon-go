@@ -12,28 +12,31 @@ var rootCmd = &cobra.Command{
 	Short: "Zero-download deployments",
 	Long:  "Platoon is a CLI deployment tool that helps make zero-downtime deployments simple",
 	Run: func(cmd *cobra.Command, args []string) {
-		if version {
+		if cmd.Flag("version").Changed {
 			showVersion()
+			os.Exit(0)
 		}
+
+		cmd.Help()
 	},
 }
-
-var version bool = false
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+
+	os.Exit(0)
 }
 
 func init() {
-	rootCmd.Flags().BoolVarP(&version, "version", "v", false, "Show version information")
+	rootCmd.Flags().BoolP("version", "v", false, "Show version information")
 
 	rootCmd.AddCommand(initCmd)
 	rootCmd.AddCommand(deployCmd)
 }
 
 func showVersion() {
-	fmt.Println("version 0.0.0-0.0.1")
+	fmt.Println("Platoon-Go : version 0.0.0-0.0.1")
 }
