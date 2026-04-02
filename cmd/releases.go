@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"platoon-go/internal/release"
 
 	"github.com/spf13/cobra"
 )
 
-var ReleasesListCmd = &cobra.Command{
+var releasesListCmd = &cobra.Command{
 	Use:   "releases:list [target]",
 	Short: "List all existing releases",
 	Long:  "List all existing currently installed releases",
@@ -17,6 +18,9 @@ var ReleasesListCmd = &cobra.Command{
 
 		fmt.Println("Releases installed on " + target.Host)
 
+		release.List(target)
+
 		return nil
 	},
+	GroupID: "releases",
 }

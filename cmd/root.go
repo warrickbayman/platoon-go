@@ -35,6 +35,9 @@ func init() {
 
 	rootCmd.AddCommand(initCmd)
 	rootCmd.AddCommand(deployCmd)
+
+	rootCmd.AddGroup(&cobra.Group{ID: "releases", Title: "Release Management"})
+	rootCmd.AddCommand(releasesListCmd)
 }
 
 func showVersion() {

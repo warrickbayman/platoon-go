@@ -1,8 +1,20 @@
 package release
 
-import "platoon-go/internal/config"
+import (
+	"fmt"
+	"platoon-go/internal/config"
+	"platoon-go/internal/shell"
+)
 
-func List(target config.TargetConfig) error {
+func List(target config.TargetConfig) (string, error) {
 
-	return nil
+	data, err := shell.RunRemoteCommand(target, "ls -l")
+
+	if err != nil {
+		return "", err
+	}
+
+	fmt.Printf(data)
+
+	return string(data), nil
 }
