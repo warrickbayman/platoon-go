@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const Version string = "0.0.1-alpha.1"
+var Version string
 
 var rootCmd = &cobra.Command{
 	Use:   "platoon",
@@ -31,7 +31,9 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-func Execute() {
+func Execute(version string) {
+	Version = version
+
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
