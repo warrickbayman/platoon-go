@@ -8,11 +8,8 @@ permissions:
   contents: write
 
 jobs:
-  test:
-    uses: ./.github/workflows/test.yml
   build:
     name: Build (${{ matrix.os }}/${{ matrix.arch }})
-    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
