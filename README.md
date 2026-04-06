@@ -19,7 +19,7 @@ This is a very very early-stage project. I want to rebuild all the existing feat
 
 ## Installation
 
-If you want to download compiled binaries, you can fem them here: https://github.com/warrickbayman/platoon-go/releases. Download the binary for your OS and architecture, and place it somewhere on your path:
+If you want to download compiled binaries, you can find them [here](https://github.com/warrickbayman/platoon-go/releases). Download the binary for your OS and architecture, and place it somewhere on your path:
 
 ```shell
 mv platoon-darwin-arm64 /usr/local/bin/platoon
