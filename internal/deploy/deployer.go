@@ -11,7 +11,7 @@ import (
 	"github.com/fatih/color"
 )
 
-func Run(target config.TargetConfig, gitRepo string, logPath string) error {
+func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 	fmt.Println()
 	color.Green("Deploy to " + target.Host + "...")
 

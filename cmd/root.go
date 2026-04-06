@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"platoon-go/internal/config"
 
 	"github.com/spf13/cobra"
 )
@@ -38,8 +39,17 @@ func init() {
 
 	rootCmd.AddGroup(&cobra.Group{ID: "releases", Title: "Release Management"})
 	rootCmd.AddCommand(releasesListCmd)
+	rootCmd.AddCommand(releaseActivateCmd)
 }
 
 func showVersion() {
 	fmt.Println("Platoon-Go : version 0.0.0-0.0.1")
+}
+
+func resolveTargetName(cfg *config.Config, targetName string) string {
+	if targetName == "" {
+		return cfg.Default
+	}
+
+	return targetName
 }

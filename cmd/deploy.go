@@ -5,13 +5,18 @@ import (
 	"os"
 	"platoon-go/internal/config"
 	"platoon-go/internal/deploy"
+	"platoon-go/internal/targets"
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
+var configFilename string
+var logFilename string
+var targetName string
+
 var deployCmd = &cobra.Command{
-	Use:     "deploy [target]",
+	Use:     "deploy",
 	Short:   "Run to a target",
 	Long:    "Run the application to the specified target (or default target if none is specified)",
 	Aliases: []string{"d"},
@@ -19,7 +24,7 @@ var deployCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg := loadConfig()
 
-		target := resolveTarget(cfg, args[0])
+		target := targets.ResolveTarget(cfg, resolveTargetName(cfg, targetName))
 
 		err := deploy.Run(target, cfg.Repo, logFilename)
 
@@ -31,12 +36,10 @@ var deployCmd = &cobra.Command{
 	},
 }
 
-var configFilename string
-var logFilename string
-
 func init() {
 	deployCmd.Flags().StringVarP(&configFilename, "config", "c", "platoon.yml", "Path to a platoon config file")
 	deployCmd.Flags().StringVarP(&logFilename, "log", "l", "deploy.log", "Log file to log to")
+	deployCmd.Flags().StringVarP(&targetName, "name", "n", "", "Target name")
 }
 
 func loadConfig() *config.Config {
@@ -52,18 +55,4 @@ func loadConfig() *config.Config {
 	}
 
 	return cfg
-}
-
-func resolveTarget(cfg *config.Config, name string) config.TargetConfig {
-
-	t, ok := cfg.Targets[name]
-
-	if !ok {
-		color.New(color.FgRed).Print("Target ")
-		color.New(color.FgRed, color.Bold).Print(name)
-		color.New(color.FgRed).Println(" not found")
-		os.Exit(1)
-	}
-
-	return t
 }

@@ -11,9 +11,9 @@ type PlatoonCommand struct {
 	Command string
 }
 
-func BuildCommands(target config.TargetConfig, gitRepo string, releaseId string) []PlatoonCommand {
+func BuildCommands(target *config.TargetConfig, gitRepo string, releaseId string) []*PlatoonCommand {
 
-	return []PlatoonCommand{
+	return []*PlatoonCommand{
 		{
 			Type:    "local",
 			Name:    "Local pre-deploy",

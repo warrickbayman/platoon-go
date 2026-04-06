@@ -11,11 +11,11 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func RunShell(target config.TargetConfig, command string) ([]byte, error) {
+func RunShell(target *config.TargetConfig, command string) ([]byte, error) {
 	return exec.Command("ssh", target.Username+"@"+target.Host, "-p"+strconv.Itoa(target.Port), command).CombinedOutput()
 }
 
-func Run(target config.TargetConfig, keyPath string, command string) {
+func Run(target *config.TargetConfig, keyPath string, command string) {
 	config := &ssh.ClientConfig{
 		User: target.Username,
 		Auth: []ssh.AuthMethod{

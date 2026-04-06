@@ -16,7 +16,7 @@ func RunLocalCommand(command string) (string, error) {
 	return string(data), nil
 }
 
-func RunRemoteCommand(target config.TargetConfig, command string) (string, error) {
+func RunRemoteCommand(target *config.TargetConfig, command string) (string, error) {
 	data, err := ssh.RunShell(target, command)
 
 	if err != nil {
