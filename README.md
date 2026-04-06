@@ -38,6 +38,14 @@ go build -o bin/platoon ./cmd/platoon
 ./bin/platoon --version    # 0.0.0-0.1.1
 ```
 
+## Testing
+
+To run the test suite, use:
+
+```shell
+go test ./...
+```
+
 ## Config
 
 The configuration for the original Platoon was written as a PHP array. For Platoon-go, the configuration is changing to a YAML file (`platoon.yml`) placed at the root of the project. An example would look like this:

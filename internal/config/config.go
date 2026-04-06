@@ -56,7 +56,7 @@ func (config *TargetConfig) ReleasePath(suffix string) string {
 }
 
 func (config *TargetConfig) ServePath(suffix string) string {
-	path := config.Paths.Releases
+	path := config.Paths.Serve
 	if path == "" {
 		path = "live"
 	}
@@ -65,7 +65,7 @@ func (config *TargetConfig) ServePath(suffix string) string {
 }
 
 func (config *TargetConfig) StoragePath(suffix string) string {
-	path := config.Paths.Releases
+	path := config.Paths.Storage
 	if path == "" {
 		path = "storage"
 	}
