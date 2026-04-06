@@ -64,13 +64,10 @@ To run a deployment
 
 ```shell
 # to a specific target
-platoon deploy staging
+platoon deploy --target staging
 
 # to the default target
 platoon deploy
-
-# to multiple targets
-platoon deploy staging,production
 ```
 
 ### Release management
@@ -82,7 +79,7 @@ Get a list of available releases:
 platoon release:list
 
 # or a specific target
-platoon release:list staging
+platoon release:list --target staging
 ```
 
 Rollback to the previous release:
@@ -94,7 +91,7 @@ platoon release:rollback
 Set a specific release as active:
 
 ```shell
-platoon release:active 202512042144
+platoon release:activate 202512042144
 ```
 
 ## License
