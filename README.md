@@ -20,7 +20,7 @@ This is a very very early-stage project. I want to rebuild all the existing feat
 To build, run:
 
 ```shell
-go build -o bin/platoon main.go
+go build -o bin/platoon ./cmd/platoon
 
 ./bin/platoon --version    # 0.0.0-0.0.1
 ```
