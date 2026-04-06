@@ -100,7 +100,7 @@ func Load(filename string) *Config {
 	return &cfg
 }
 
-func Init(filename string, overwrite bool) {
+func Init(filename string, overwrite bool) error {
 	cfg := Config{
 		Repo:    "git@github.com:team/repo.git",
 		Default: "staging",
@@ -128,29 +128,27 @@ func Init(filename string, overwrite bool) {
 
 	data, _ := yaml.Marshal(cfg)
 	_, err := os.Stat(filename)
-	if os.IsNotExist(err) || !overwrite {
-		fmt.Println(output.Error("config file already exists. Use --force to overwrite."))
-		os.Exit(1)
+	if err == nil && !overwrite {
+		return fmt.Errorf("config file already exists. Use --force to overwrite")
 	}
 
-	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 
 	if err != nil {
-		fmt.Println(output.Error("error creating config file: " + err.Error()))
-		os.Exit(1)
+		return fmt.Errorf("error creating config file: %w", err)
 	}
 	defer func(f *os.File) {
 		err := f.Close()
 		if err != nil {
-			fmt.Println(output.Error("error closing config file: " + err.Error()))
-			os.Exit(1)
+			fmt.Println(fmt.Errorf("failed to close file: %w", err))
 		}
 	}(f)
 
 	_, er := fmt.Fprint(f, string(data))
 
 	if er != nil {
-		fmt.Println(output.Error("error writing to config file: " + er.Error()))
-		os.Exit(1)
+		return fmt.Errorf("error writing to config file: %w", er)
 	}
+
+	return nil
 }

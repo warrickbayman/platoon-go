@@ -15,9 +15,7 @@ var InitCmd = &cobra.Command{
 	Long:    "Places a new platoon.yml config file at the root of the current project.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		config.Init(configFile, cmd.Flags().Changed("force"))
-
-		return nil
+		return config.Init(configFile, cmd.Flags().Changed("force"))
 	},
 }
 

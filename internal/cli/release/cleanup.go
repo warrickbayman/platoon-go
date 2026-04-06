@@ -2,7 +2,6 @@ package release
 
 import (
 	"fmt"
-	"os"
 	"platoon-go/internal/output"
 	"platoon-go/internal/release"
 
@@ -21,8 +20,7 @@ var cleanupCmd = &cobra.Command{
 
 		err := release.Cleanup(target)
 		if err != nil {
-			fmt.Println(output.Error("unable to cleanup releases"))
-			os.Exit(1)
+			return fmt.Errorf("unable to cleanup releases: %w", err)
 		}
 
 		return nil

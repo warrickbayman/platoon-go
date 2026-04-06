@@ -12,14 +12,19 @@ func WriteToFile(path string, content string) {
 	if err != nil {
 		fmt.Println(fmt.Errorf("failed to create file: %w", err))
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			fmt.Println(fmt.Errorf("failed to close file: %w", err))
+		}
+	}(f)
 
 	t := time.Now().Format("2006-01-02 15:04:05")
 
 	_, er := fmt.Fprintf(f, "[%s] %s\n", t, content)
 
 	if er != nil {
-		fmt.Println(fmt.Errorf("failed to write to log file: %w", err))
+		fmt.Println(fmt.Errorf("failed to write to log file: %w", er))
 	}
 }
 

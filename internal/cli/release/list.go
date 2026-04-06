@@ -25,8 +25,7 @@ var listCmd = &cobra.Command{
 		list, err := release.List(target)
 
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			return err
 		}
 
 		table := tablewriter.NewWriter(os.Stdout)
