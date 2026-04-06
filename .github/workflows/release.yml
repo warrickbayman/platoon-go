@@ -1,10 +1,6 @@
-name: Build and Release
+name: Release
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   release:
     types: [published]
 
@@ -13,22 +9,8 @@ permissions:
 
 jobs:
   test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-
-      - name: Test
-        run: go test ./...
-
+    uses: ./.github/workflows/test.yml
   build:
-    if: github.event_name == 'release'
     name: Build (${{ matrix.os }}/${{ matrix.arch }})
     needs: test
     runs-on: ubuntu-latest
