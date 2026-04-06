@@ -1,3 +1,5 @@
+![GitHub Release](https://img.shields.io/github/v/release/warrickbayman/platoon-go?include_prereleases)
+
 # Platoon Go
 
 This is a rewrite of the original Platoon library as a standalone application; rewritten entirely in Go.
@@ -14,6 +16,16 @@ Platoon is currently developed in PHP and is very Laravel specific. The attempt 
 ## State
 
 This is a very very early-stage project. I want to rebuild all the existing features into this version and I'm still learning alot about Go. This should not be used at all. Please wait for a proper release version.
+
+## Installation
+
+If you want to download compiled binaries, you can fem them here: https://github.com/warrickbayman/platoon-go/releases. Download the binary for your OS and architecture, and place it somewhere on your path:
+
+```shell
+mv platoon-darwin-arm64 /usr/local/bin/platoon
+
+platoon --version
+```
 
 ## Build
 
