@@ -1,3 +1,4 @@
+.idea/
+bin/
 .DS_store
 platoon.yml
-bin/
