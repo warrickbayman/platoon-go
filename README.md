@@ -1,3 +1,4 @@
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/warrickbayman/platoon-go/tests.yml?label=tests)
 ![GitHub Release](https://img.shields.io/github/v/release/warrickbayman/platoon-go?include_prereleases)
 
 # Platoon Go
