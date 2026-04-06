@@ -11,6 +11,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const Version string = "0.0.1-alpha.1"
+
 var rootCmd = &cobra.Command{
 	Use:   "platoon",
 	Short: "Zero-download deployments",
@@ -49,5 +51,5 @@ func init() {
 }
 
 func showVersion() {
-	fmt.Println("Platoon-Go : " + color.New(color.FgCyan).Sprint("0.0.0-0.1.1"))
+	fmt.Println("Platoon-Go : " + color.New(color.FgCyan).Sprint(Version))
 }
