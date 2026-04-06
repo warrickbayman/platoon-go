@@ -5,6 +5,7 @@ import (
 	"os"
 	"platoon-go/internal/config"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -18,13 +19,17 @@ var rootCmd = &cobra.Command{
 			os.Exit(0)
 		}
 
-		cmd.Help()
+		err := cmd.Help()
+
+		if err != nil {
+			fmt.Println(err)
+		}
 	},
 }
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
@@ -43,7 +48,7 @@ func init() {
 }
 
 func showVersion() {
-	fmt.Println("Platoon-Go : version 0.0.0-0.0.1")
+	fmt.Println("Platoon-Go : " + color.New(color.FgCyan).Sprint("0.0.0-0.1.1"))
 }
 
 func resolveTargetName(cfg *config.Config, targetName string) string {
