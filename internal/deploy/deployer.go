@@ -5,6 +5,7 @@ import (
 	"os"
 	"platoon-go/internal/config"
 	"platoon-go/internal/output"
+	"platoon-go/internal/release"
 	"platoon-go/internal/shell"
 	"time"
 
@@ -17,11 +18,16 @@ func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 
 	releaseId := time.Now().Format("20060102150405")
 
-	fmt.Println("Release ID: " + color.New(color.FgBlue).Sprint(releaseId))
+	fmt.Println("Release ID: " + output.Note(releaseId))
 
 	commands := BuildCommands(target, gitRepo, releaseId)
 
-	os.Remove(logPath)
+	err := os.Remove(logPath)
+	if err != nil {
+		fmt.Println(output.Danger("error clearing log file"))
+		output.WriteToFile(logPath, err.Error())
+		os.Exit(1)
+	}
 
 	for c := range commands {
 
@@ -33,7 +39,7 @@ func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 
 		switch commands[c].Type {
 		case "remote":
-			fmt.Println(color.New(color.FgCyan).Sprint("[REMOTE] ") + commands[c].Name)
+			fmt.Println(output.DarkEmphasis("[REMOTE] ") + commands[c].Name)
 			_, err := shell.RunRemoteCommand(target, commands[c].Command)
 
 			output.WriteToFile(logPath, commands[c].Command)
@@ -46,7 +52,7 @@ func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 				os.Exit(2)
 			}
 		default:
-			fmt.Println(color.New(color.FgBlue).Sprint("[LOCAL]  ") + commands[c].Name)
+			fmt.Println(output.Emphasis("[LOCAL]  ") + commands[c].Name)
 			_, err := shell.RunLocalCommand(commands[c].Command)
 
 			output.WriteToFile(logPath, commands[c].Command)
@@ -61,7 +67,13 @@ func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 		}
 	}
 
-	Cleanup(target)
+	fmt.Println("----------------------------------------")
+
+	er := release.Cleanup(target)
+
+	if er != nil {
+		fmt.Println(output.Danger("error cleaning up releases"))
+	}
 
 	return nil
 }

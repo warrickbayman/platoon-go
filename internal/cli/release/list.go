@@ -1,28 +1,26 @@
-package cmd
+package release
 
 import (
 	"fmt"
 	"os"
+	"platoon-go/internal/output"
 	"platoon-go/internal/release"
-	"platoon-go/internal/targets"
 
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
 
-var releasesListCmd = &cobra.Command{
-	Use:     "release:list",
+var listCmd = &cobra.Command{
+	Use:     "list",
+	Aliases: []string{"l", "ls"},
 	Short:   "List all existing releases",
 	Long:    "List all existing currently installed releases",
-	GroupID: "releases",
 	Args:    cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cfg := loadConfig()
+		loadConfig()
 
-		target := targets.ResolveTarget(cfg, resolveTargetName(cfg, targetName))
-
-		fmt.Println("Releases installed on " + target.Host)
+		fmt.Println("Releases installed on " + output.Emphasis(target.Host))
 
 		list, err := release.List(target)
 
@@ -40,19 +38,15 @@ var releasesListCmd = &cobra.Command{
 				isActive = "*"
 			}
 
-			table.Append([]string{
+			_ = table.Append([]string{
 				color.New(color.FgGreen).Sprint(release.Id),
 				release.Date,
 				color.New(color.FgGreen).Sprint(isActive),
 			})
 		}
 
-		table.Render()
+		_ = table.Render()
 
 		return nil
 	},
-}
-
-func init() {
-	releasesListCmd.Flags().StringVarP(&targetName, "target", "t", "", "The name of the target host")
 }

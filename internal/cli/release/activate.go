@@ -1,32 +1,31 @@
-package cmd
+package release
 
 import (
 	"fmt"
+	"os"
+	"platoon-go/internal/output"
 	"platoon-go/internal/release"
-	"platoon-go/internal/targets"
 
 	"github.com/spf13/cobra"
 )
 
-var releaseActivateCmd = &cobra.Command{
-	Use:     "release:activate [id]",
+var activateCmd = &cobra.Command{
+	Use:     "activate [id]",
+	Aliases: []string{"a", "active"},
 	Short:   "Activate the specified release",
 	Long:    "Activate an existing release on the specified target. The release MUST exist on the target server",
-	GroupID: "releases",
 	Args:    cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cfg := loadConfig()
-
-		target := targets.ResolveTarget(cfg, resolveTargetName(cfg, targetName))
+		loadConfig()
 
 		fmt.Println("Activating release on " + target.Host)
 
-		release.Activate(target, args[0])
+		err := release.Activate(target, args[0])
+		if err != nil {
+			fmt.Println(output.Error("unable to activate the release"))
+			os.Exit(1)
+		}
 
 		return nil
 	},
-}
-
-func init() {
-	releaseActivateCmd.Flags().StringVarP(&targetName, "target", "t", "", "Target name")
 }

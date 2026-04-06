@@ -22,7 +22,7 @@ To build, run:
 ```shell
 go build -o bin/platoon ./cmd/platoon
 
-./bin/platoon --version    # 0.0.0-0.0.1
+./bin/platoon --version    # 0.0.0-0.1.1
 ```
 
 ## Config
@@ -36,10 +36,8 @@ default: staging
 
 targets:
   common:
-    php:
-      bin: /usr/bin/php
-      composer: /usr/bin/composer
-    keep: 2
+    releases:
+      max: 2
   
   staging:
     host: staging.example.com
@@ -56,7 +54,13 @@ targets:
         - @artisan config:cache
 ```
 
-The scripts will change from the existing solution as the deployment process will no longer be Laravel or PHP specific.
+You can generate a new config file in the current directory with:
+
+```shell
+platoon init
+```
+
+This will create a `platoon.yml` file at the current location.
 
 ### Deployment
 
@@ -76,22 +80,28 @@ Get a list of available releases:
 
 ```shell
 # the default target
-platoon release:list
+platoon release list
+
+# You can use the shorthand versions as well:
+platoon r l
 
 # or a specific target
-platoon release:list --target staging
+platoon release list --target staging
 ```
 
 Rollback to the previous release:
 
 ```shell
-platoon release:rollback
+platoon release rollback
 ```
 
 Set a specific release as active:
 
 ```shell
-platoon release:activate 202512042144
+platoon release activate 202512042144
+
+# or use the shorthand version
+platoon r a 202512042144
 ```
 
 ## License

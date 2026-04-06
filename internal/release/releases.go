@@ -2,9 +2,12 @@ package release
 
 import (
 	"errors"
+	"fmt"
 	"platoon-go/internal/config"
+	"platoon-go/internal/output"
 	"platoon-go/internal/shell"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -40,7 +43,11 @@ func List(target *config.TargetConfig) ([]Release, error) {
 		return nil, err
 	}
 
-	active, err := Active(target)
+	active, er := Active(target)
+
+	if er != nil {
+		return nil, er
+	}
 
 	ids := strings.Split(data, "\n")
 	ids = slices.Delete(ids, len(ids)-1, len(ids))
@@ -80,6 +87,59 @@ func Active(target *config.TargetConfig) (*Release, error) {
 		Date:   DateString(id),
 		Active: true,
 	}, nil
+}
+
+func Cleanup(target *config.TargetConfig) error {
+
+	releases, err := List(target)
+
+	if len(releases) == 0 {
+		return nil
+	}
+
+	if err != nil {
+		return err
+	}
+
+	slices.SortFunc(releases, func(i, j Release) int {
+
+		iDate, _ := strconv.ParseInt(i.Id, 10, 64)
+		jDate, _ := strconv.ParseInt(j.Id, 10, 64)
+
+		if iDate < jDate {
+			return 1
+		}
+
+		if iDate > jDate {
+			return -1
+		}
+
+		return 0
+	})
+
+	activeIndex := slices.IndexFunc(releases, func(r Release) bool {
+		return r.Active
+	})
+
+	releasesToClear := make([]Release, 0)
+
+	count := activeIndex + target.Releases.Max
+
+	if len(releases) > count {
+		releasesToClear = slices.Delete(releases, 0, activeIndex+target.Releases.Max)
+	}
+
+	for _, release := range releasesToClear {
+		fmt.Println("Clearing release " + output.Emphasis(release.Id))
+		_, err := shell.RunRemoteCommand(target, "rm -rf "+target.ReleasePath(release.Id))
+
+		if err != nil {
+			fmt.Println(output.Error("failed to clean release " + release.Id))
+		}
+	}
+
+	// Clean up old releases
+	return nil
 }
 
 func DateString(id string) string {

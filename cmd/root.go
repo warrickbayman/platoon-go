@@ -3,7 +3,9 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"platoon-go/internal/config"
+	"platoon-go/internal/cli/config"
+	"platoon-go/internal/cli/deploy"
+	"platoon-go/internal/cli/release"
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
@@ -39,22 +41,13 @@ func Execute() {
 func init() {
 	rootCmd.Flags().BoolP("version", "v", false, "Show version information")
 
-	rootCmd.AddCommand(initCmd)
-	rootCmd.AddCommand(deployCmd)
+	rootCmd.AddCommand(config.InitCmd)
+	rootCmd.AddCommand(deploy.DeployCmd)
 
 	rootCmd.AddGroup(&cobra.Group{ID: "releases", Title: "Release Management"})
-	rootCmd.AddCommand(releasesListCmd)
-	rootCmd.AddCommand(releaseActivateCmd)
+	rootCmd.AddCommand(release.ReleaseCmd)
 }
 
 func showVersion() {
 	fmt.Println("Platoon-Go : " + color.New(color.FgCyan).Sprint("0.0.0-0.1.1"))
-}
-
-func resolveTargetName(cfg *config.Config, targetName string) string {
-	if targetName == "" {
-		return cfg.Default
-	}
-
-	return targetName
 }
