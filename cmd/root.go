@@ -46,6 +46,8 @@ func init() {
 	rootCmd.Flags().BoolP("version", "v", false, "Show version information")
 
 	rootCmd.AddCommand(config.InitCmd)
+
+	rootCmd.AddGroup(&cobra.Group{ID: "deploy", Title: "Deployment"})
 	rootCmd.AddCommand(deploy.DeployCmd)
 
 	rootCmd.AddGroup(&cobra.Group{ID: "releases", Title: "Release Management"})

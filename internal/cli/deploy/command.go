@@ -17,7 +17,7 @@ var DeployCmd = &cobra.Command{
 	Aliases: []string{"d", "dep"},
 	Short:   "Run to a target",
 	Long:    "Run the application to the specified target (or default target if none is specified)",
-	Args:    cobra.MaximumNArgs(1),
+	GroupID: "deploy",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg := config.Load(configFilename)
 
@@ -35,6 +35,6 @@ var DeployCmd = &cobra.Command{
 
 func init() {
 	DeployCmd.Flags().StringVarP(&configFilename, "config", "c", "platoon.yml", "Path to a platoon config file")
-	DeployCmd.Flags().StringVarP(&logFilename, "log", "l", "deploy.log", "Log file to log to")
-	DeployCmd.Flags().StringVarP(&targetName, "name", "n", "", "Target name")
+	DeployCmd.Flags().StringVarP(&logFilename, "log", "l", "deploy.log", "Filename to log output")
+	DeployCmd.Flags().StringVarP(&targetName, "target", "t", "", "Name of the target host")
 }
