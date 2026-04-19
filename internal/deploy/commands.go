@@ -2,7 +2,7 @@ package deploy
 
 import (
 	"platoon-go/internal/config"
-	"platoon-go/internal/release"
+	"platoon-go/internal/shell"
 	"strings"
 )
 
@@ -42,7 +42,7 @@ func BuildCommands(target *config.TargetConfig, gitRepo string, releaseId string
 		},
 		{
 			Case: func() bool {
-				return !release.FileExists(target, target.StoragePath(""))
+				return !shell.DirectoryExists(target, target.Root+"/storage")
 			},
 			Type:    "remote",
 			Name:    "Copying storage directory",
@@ -58,7 +58,7 @@ func BuildCommands(target *config.TargetConfig, gitRepo string, releaseId string
 		},
 		{
 			Case: func() bool {
-				return !release.FileExists(target, target.Root+"/.env")
+				return !shell.FileExists(target, target.Root+"/.env")
 			},
 			Type:    "remote",
 			Name:    "Copying .env",
