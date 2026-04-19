@@ -47,10 +47,15 @@ func applyCommon(target *config.TargetConfig, common *config.TargetConfig) *conf
 		target.Assets = common.Assets
 	}
 
+	applyDefaultScriptConfig(target)
 	applyCommonScriptConfig(target, common)
 	applyCommonReleaseConfig(target, common)
 
 	return target
+}
+
+func applyDefaultScriptConfig(target *config.TargetConfig) {
+	target.Releases.Max = 2
 }
 
 func applyCommonScriptConfig(target *config.TargetConfig, common *config.TargetConfig) {

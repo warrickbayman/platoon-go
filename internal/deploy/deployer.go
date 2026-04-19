@@ -31,7 +31,7 @@ func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 
 	for c := range commands {
 
-		if commands[c].Command == "" {
+		if commands[c].Command == "" || !commands[c].Case() {
 			continue
 		}
 
@@ -39,31 +39,37 @@ func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 
 		switch commands[c].Type {
 		case "remote":
-			fmt.Println(output.DarkEmphasis("[REMOTE] ") + commands[c].Name)
+			spinner := output.NewSpinner(output.DarkEmphasis("[REMOTE] ") + commands[c].Name)
+			spinner.Start()
 			_, err := shell.RunRemoteCommand(target, commands[c].Command)
 
 			output.WriteToFile(logPath, commands[c].Command)
 
 			if err != nil {
+				spinner.Fail()
 				output.WriteToFile(logPath, err.Error())
 
 				color.Red(commands[c].Command)
 				fmt.Printf("error running remote command: %v\n", err)
 				os.Exit(2)
 			}
+			spinner.Success()
 		default:
-			fmt.Println(output.Emphasis("[LOCAL]  ") + commands[c].Name)
+			spinner := output.NewSpinner(output.Emphasis("[LOCAL]  ") + commands[c].Name)
+			spinner.Start()
 			_, err := shell.RunLocalCommand(commands[c].Command)
 
 			output.WriteToFile(logPath, commands[c].Command)
 
 			if err != nil {
+				spinner.Fail()
 				output.WriteToFile(logPath, err.Error())
 
 				color.Red(commands[c].Command)
 				fmt.Printf("error running local command: %v\n", err)
 				os.Exit(2)
 			}
+			spinner.Success()
 		}
 	}
 

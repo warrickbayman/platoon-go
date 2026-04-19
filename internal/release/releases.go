@@ -89,11 +89,38 @@ func Active(target *config.TargetConfig) (*Release, error) {
 	}, nil
 }
 
+func FileExists(target *config.TargetConfig, path string) bool {
+	data, err := shell.RunRemoteCommand(target, "if [ -f "+path+"] then; echo \"exists\"; fi")
+
+	fmt.Println(err)
+	fmt.Println(data)
+
+	if err != nil {
+		return false
+	}
+
+	return data == "exists"
+}
+
+func DirectoryExists(target *config.TargetConfig, path string) bool {
+	fmt.Println("Directory exists?")
+	data, err := shell.RunRemoteCommand(target, "if [ -d "+path+"] then; echo \"exists\"; fi")
+
+	fmt.Println(err)
+	fmt.Println(data)
+
+	if err != nil {
+		return false
+	}
+
+	return data == "exists"
+}
+
 func Cleanup(target *config.TargetConfig) error {
 
 	releases, err := List(target)
 
-	if len(releases) == 0 {
+	if len(releases) <= target.Releases.Max {
 		return nil
 	}
 

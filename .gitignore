@@ -1,5 +1,6 @@
 .idea/
 bin/
+laravel/
 .DS_store
 deploy.log
 platoon.yml
