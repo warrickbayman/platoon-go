@@ -1,8 +1,9 @@
 package output
 
 import (
-	"github.com/fatih/color"
 	"testing"
+
+	"github.com/fatih/color"
 )
 
 func TestHighlight(t *testing.T) {

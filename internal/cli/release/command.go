@@ -13,7 +13,7 @@ var cfg *config.Config
 var targetName string
 var target *config.TargetConfig
 
-var ReleaseCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:     "release",
 	Aliases: []string{"r", "rel"},
 	Short:   "Manage releases",
@@ -31,12 +31,12 @@ var ReleaseCmd = &cobra.Command{
 }
 
 func init() {
-	ReleaseCmd.PersistentFlags().StringVarP(&configFilename, "config", "c", "platoon.yml", "Path to the platoon config file")
-	ReleaseCmd.PersistentFlags().StringVarP(&targetName, "target", "t", "", "The name of the target host")
+	Cmd.PersistentFlags().StringVarP(&configFilename, "config", "c", "platoon.yml", "Path to the platoon config file")
+	Cmd.PersistentFlags().StringVarP(&targetName, "target", "t", "", "The name of the target host")
 
-	ReleaseCmd.AddCommand(listCmd)
-	ReleaseCmd.AddCommand(activateCmd)
-	ReleaseCmd.AddCommand(cleanupCmd)
+	Cmd.AddCommand(listCmd)
+	Cmd.AddCommand(activateCmd)
+	Cmd.AddCommand(cleanupCmd)
 }
 
 func loadConfig() {

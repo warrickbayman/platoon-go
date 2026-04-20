@@ -45,13 +45,13 @@ func Execute(version string) {
 func init() {
 	rootCmd.Flags().BoolP("version", "v", false, "Show version information")
 
-	rootCmd.AddCommand(config.InitCmd)
+	rootCmd.AddCommand(config.Cmd)
 
 	rootCmd.AddGroup(&cobra.Group{ID: "deploy", Title: "Deployment"})
-	rootCmd.AddCommand(deploy.DeployCmd)
+	rootCmd.AddCommand(deploy.Cmd)
 
 	rootCmd.AddGroup(&cobra.Group{ID: "releases", Title: "Release Management"})
-	rootCmd.AddCommand(release.ReleaseCmd)
+	rootCmd.AddCommand(release.Cmd)
 }
 
 func showVersion() {

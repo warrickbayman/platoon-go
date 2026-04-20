@@ -12,7 +12,7 @@ var configFilename string
 var logFilename string
 var targetName string
 
-var DeployCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:     "deploy",
 	Aliases: []string{"d", "dep"},
 	Short:   "Run to a target",
@@ -34,7 +34,7 @@ var DeployCmd = &cobra.Command{
 }
 
 func init() {
-	DeployCmd.Flags().StringVarP(&configFilename, "config", "c", "platoon.yml", "Path to a platoon config file")
-	DeployCmd.Flags().StringVarP(&logFilename, "log", "l", "deploy.log", "Filename to log output")
-	DeployCmd.Flags().StringVarP(&targetName, "target", "t", "", "Name of the target host")
+	Cmd.Flags().StringVarP(&configFilename, "config", "c", "platoon.yml", "Path to a platoon config file")
+	Cmd.Flags().StringVarP(&logFilename, "log", "l", "deploy.log", "Filename to log output")
+	Cmd.Flags().StringVarP(&targetName, "target", "t", "", "Name of the target host")
 }

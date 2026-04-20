@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var InitCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:     "init",
 	Aliases: []string{"i", "new"},
 	Short:   "Initialize a new platoon config",
@@ -18,6 +18,6 @@ var InitCmd = &cobra.Command{
 }
 
 func init() {
-	InitCmd.Flags().StringP("config", "c", "platoon.yml", "Path to the config file")
-	InitCmd.Flags().BoolP("force", "f", false, "Force overwrite of existing config file")
+	Cmd.Flags().StringP("config", "c", "platoon.yml", "Path to the config file")
+	Cmd.Flags().BoolP("force", "f", false, "Force overwrite of existing config file")
 }

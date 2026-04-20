@@ -14,7 +14,7 @@ func TestInitCmd(t *testing.T) {
 		configPath := filepath.Join(tmpDir, "platoon-test.yml")
 
 		cmd := &cobra.Command{
-			RunE: InitCmd.RunE,
+			RunE: Cmd.RunE,
 		}
 		var configFile string
 		cmd.Flags().StringVarP(&configFile, "config", "c", "platoon.yml", "Path to the config file")
@@ -42,7 +42,7 @@ func TestInitCmd(t *testing.T) {
 		}
 
 		cmd := &cobra.Command{
-			RunE: InitCmd.RunE,
+			RunE: Cmd.RunE,
 		}
 		var configFile string
 		cmd.Flags().StringVarP(&configFile, "config", "c", "platoon.yml", "Path to the config file")
@@ -67,7 +67,7 @@ func TestInitCmd(t *testing.T) {
 		}
 
 		cmd := &cobra.Command{
-			RunE: InitCmd.RunE,
+			RunE: Cmd.RunE,
 		}
 		var configFile string
 		cmd.Flags().StringVarP(&configFile, "config", "c", "platoon.yml", "Path to the config file")
