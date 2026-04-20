@@ -37,13 +37,16 @@ func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 
 		output.WriteToFile(logPath, commands[c].Name)
 
+		output.WriteToFile(logPath, commands[c].Command)
+
 		switch commands[c].Type {
 		case "remote":
 			spinner := output.NewSpinner(output.DarkEmphasis("[REMOTE] ") + commands[c].Name)
 			spinner.Start()
-			_, err := shell.RunRemoteCommand(target, commands[c].Command)
 
-			output.WriteToFile(logPath, commands[c].Command)
+			commandOutput, err := shell.RunRemoteCommand(target, commands[c].Command)
+
+			output.WriteToFile(logPath, commandOutput)
 
 			if err != nil {
 				spinner.Fail()
@@ -57,9 +60,9 @@ func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 		default:
 			spinner := output.NewSpinner(output.Emphasis("[LOCAL]  ") + commands[c].Name)
 			spinner.Start()
-			_, err := shell.RunLocalCommand(commands[c].Command)
+			commandOutput, err := shell.RunLocalCommand(commands[c].Command)
 
-			output.WriteToFile(logPath, commands[c].Command)
+			output.WriteToFile(logPath, commandOutput)
 
 			if err != nil {
 				spinner.Fail()
