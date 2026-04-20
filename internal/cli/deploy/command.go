@@ -23,7 +23,7 @@ var Cmd = &cobra.Command{
 
 		target := targets.ResolveTarget(cfg, targets.ResolveTargetName(cfg, targetName))
 
-		err := deploy.Run(target, cfg.Repo, logFilename)
+		err := deploy.Run(target, cfg.Repo, logFilename, cmd.Flags().Changed("verbose"))
 
 		if err != nil {
 			return err
@@ -37,4 +37,5 @@ func init() {
 	Cmd.Flags().StringVarP(&configFilename, "config", "c", "platoon.yml", "Path to a platoon config file")
 	Cmd.Flags().StringVarP(&logFilename, "log", "l", "deploy.log", "Filename to log output")
 	Cmd.Flags().StringVarP(&targetName, "target", "t", "", "Name of the target host")
+	Cmd.Flags().BoolP("verbose", "v", false, "Enable verbose output")
 }

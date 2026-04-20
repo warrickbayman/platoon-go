@@ -12,7 +12,7 @@ import (
 	"github.com/fatih/color"
 )
 
-func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
+func Run(target *config.TargetConfig, gitRepo string, logPath string, verbose bool) error {
 	fmt.Println()
 	color.Green("Deploy to " + target.Host + "...")
 
@@ -37,7 +37,9 @@ func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 
 		output.WriteToFile(logPath, commands[c].Name)
 
-		output.WriteToFile(logPath, commands[c].Command)
+		if verbose {
+			output.WriteToFile(logPath, commands[c].Command)
+		}
 
 		switch commands[c].Type {
 		case "remote":
@@ -60,6 +62,7 @@ func Run(target *config.TargetConfig, gitRepo string, logPath string) error {
 		default:
 			spinner := output.NewSpinner(output.Emphasis("[LOCAL]  ") + commands[c].Name)
 			spinner.Start()
+
 			commandOutput, err := shell.RunLocalCommand(commands[c].Command)
 
 			output.WriteToFile(logPath, commandOutput)
